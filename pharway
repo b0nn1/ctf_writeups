@@ -1,0 +1,83 @@
+<?php
+
+
+include('flag.php');
+
+$a=$_GET['flag0'];
+if(strlen($a)>3){                                                 
+}
+if($a>900000000){
+  echo "<h1>".$flag[0]."</h1>";
+}
+
+
+#------------------------------------------------------------------------------------------------------------------
+$_p = 1337;
+$_l = 13;
+$l = strlen($_GET['secret']);
+$_i = intval($_GET['secret']);
+if($l !== $_l || $_i !== $_p)                                 
+{
+    die("bye");
+}
+echo "<h1>".$flag[1]."</h1>";
+
+#-----------------------------------------------------------------------------------------------------------------------
+#https://github.com/bl4de/ctf/blob/master/2017/BostonKeyParty_2017/Prudentialv2/Prudentialv2_Cloud_50.md
+if (isset($_GET['a']) and isset($_GET['b'])) {
+    if ($_GET['a'] === $_GET['b'])
+        print 'Your password can not be your dog\'s name.';                                  
+    else if (sha1($_GET['a']) === sha1($_GET['b']))
+      echo  "<h1>".$flag[2]."</h1>";
+    else
+        print '<p class="alert">Invalid password.</p>';
+}
+#-----------------------------------------------------------------------------------------------------------------------------
+
+
+#https://medium.com/@sbasu7241/hsctf-6-ctf-writeups-a807f0b25ae4
+if (!isset($_GET["md4"]))
+{
+    
+    die();
+}
+
+if ($_GET["md4"] == hash("md4", $_GET["md4"]))
+{
+    echo "<h1>".$flag[3]."</h1>";
+}
+else
+{
+    echo "bad";
+}
+
+#-----------------------------------------------------------------------------------------------------------------------------
+array confusion
+if (isset($_GET['abc'])){
+    if (!strcasecmp ($_GET['abc'], $flag[4])){
+        echo $flag[4];}}
+
+?>
+
+
+
+
+!/usr/bin/env python
+import hashlib
+import Crypto.Hash.MD4
+import re
+prefix = '0e'
+def breakit():
+    iters = 0
+    while 1:
+        s  = (prefix + str(iters)).encode('utf-8')
+        hashed_s = hashlib.new('md4', s).hexdigest()
+        iters = iters + 1
+        r = re.match('^0e[0-9]{30}', hashed_s)
+        if r:
+            print ("[+] found! md4( {} ) ---> {}".format(s, hashed_s))
+            print ("[+] in {} iterations".format(iters))
+            exit(0)
+        if iters % 1000000 == 0:
+            print ("[+] current value: {}       {} iterations, continue...".format(s, iters))
+breakit()
